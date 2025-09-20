@@ -1,0 +1,45 @@
+# Git
+.git
+.gitignore
+
+# Build artifacts
+build/
+dist/
+*.exe
+task-breaker
+task-breaker-*
+
+# Go specific
+*.test
+*.out
+coverage.out
+coverage.html
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation
+*.md
+!README.md
+
+# CI/CD
+.github/
+
+# Config files (runtime only)
+.task-breaker-config.json
+context.txt
+
+# Dependencies
+vendor/
+
+# Temporary files
+*.tmp
+*.temp

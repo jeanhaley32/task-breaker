@@ -1,0 +1,321 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient definitions -->
+    <linearGradient id="globalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="privateGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ff6b6b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ee5a24;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="taskGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4ecdc4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#44a08d;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="toolGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f093fb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f5576c;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Glow effect -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Drop shadow -->
+    <filter id="dropshadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="300" fill="#0f1419" rx="15"/>
+  
+  <!-- Global Context (Left - Single large source) -->
+  <g transform="translate(60,100)">
+    <!-- Global context container -->
+    <rect x="0" y="-30" width="40" height="60" fill="url(#globalGradient)" rx="8" filter="url(#glow)" opacity="0.9"/>
+    <text x="20" y="-35" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="8" font-weight="bold">GLOBAL</text>
+    <text x="20" y="45" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="8" font-weight="bold">CONTEXT</text>
+    
+    <!-- Data layers inside global context -->
+    <g opacity="0.7">
+      <rect x="5" y="-20" width="30" height="3" fill="#ffffff" rx="1.5"/>
+      <rect x="5" y="-12" width="25" height="3" fill="#ffffff" rx="1.5"/>
+      <rect x="5" y="-4" width="28" height="3" fill="#ffffff" rx="1.5"/>
+      <rect x="5" y="4" width="22" height="3" fill="#ffffff" rx="1.5"/>
+      <rect x="5" y="12" width="30" height="3" fill="#ffffff" rx="1.5"/>
+      <rect x="5" y="20" width="26" height="3" fill="#ffffff" rx="1.5"/>
+    </g>
+  </g>
+  
+  <!-- Branching flow lines -->
+  <g stroke="#667eea" stroke-width="2" fill="none" opacity="0.8">
+    <!-- Main trunk -->
+    <path d="M100,100 L140,100"/>
+    
+    <!-- Branches to private contexts -->
+    <path d="M140,100 L170,70"/>
+    <path d="M140,100 L170,100"/>
+    <path d="M140,100 L170,130"/>
+    
+    <!-- Branch indicators -->
+    <circle cx="140" cy="100" r="4" fill="#667eea"/>
+    <circle cx="170" cy="70" r="3" fill="#ff6b6b"/>
+    <circle cx="170" cy="100" r="3" fill="#ff6b6b"/>
+    <circle cx="170" cy="130" r="3" fill="#ff6b6b"/>
+  </g>
+  
+  <!-- Private Context Nodes -->
+  <g>
+    <!-- Private Context 1 -->
+    <g transform="translate(190,70)">
+      <rect x="0" y="-12" width="25" height="24" fill="url(#privateGradient)" rx="4" opacity="0.9"/>
+      <path d="M8,0 L17,0 M8,-4 L17,-4 M8,4 L14,4" stroke="#ffffff" stroke-width="1" opacity="0.7"/>
+      <!-- Lock icon -->
+      <rect x="3" y="-2" width="4" height="4" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.6" rx="1"/>
+      <path d="M4,-3 L4,-4 C4,-5 5,-5 6,-5 C7,-5 7,-4 7,-3" stroke="#ffffff" stroke-width="1" fill="none" opacity="0.6"/>
+    </g>
+    
+    <!-- Private Context 2 -->
+    <g transform="translate(190,100)">
+      <rect x="0" y="-12" width="25" height="24" fill="url(#privateGradient)" rx="4" opacity="0.9"/>
+      <path d="M8,0 L17,0 M8,-4 L17,-4 M8,4 L14,4" stroke="#ffffff" stroke-width="1" opacity="0.7"/>
+      <!-- Lock icon -->
+      <rect x="3" y="-2" width="4" height="4" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.6" rx="1"/>
+      <path d="M4,-3 L4,-4 C4,-5 5,-5 6,-5 C7,-5 7,-4 7,-3" stroke="#ffffff" stroke-width="1" fill="none" opacity="0.6"/>
+    </g>
+    
+    <!-- Private Context 3 -->
+    <g transform="translate(190,130)">
+      <rect x="0" y="-12" width="25" height="24" fill="url(#privateGradient)" rx="4" opacity="0.9"/>
+      <path d="M8,0 L17,0 M8,-4 L17,-4 M8,4 L14,4" stroke="#ffffff" stroke-width="1" opacity="0.7"/>
+      <!-- Lock icon -->
+      <rect x="3" y="-2" width="4" height="4" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.6" rx="1"/>
+      <path d="M4,-3 L4,-4 C4,-5 5,-5 6,-5 C7,-5 7,-4 7,-3" stroke="#ffffff" stroke-width="1" fill="none" opacity="0.6"/>
+    </g>
+  </g>
+  
+  <!-- Task Generation Lines -->
+  <g stroke="#4ecdc4" stroke-width="2" fill="none" opacity="0.8">
+    <!-- From private contexts to tasks -->
+    <path d="M215,70 L270,60"/>
+    <path d="M215,70 L270,80"/>
+    
+    <path d="M215,100 L270,100"/>
+    <path d="M215,100 L270,120"/>
+    
+    <path d="M215,130 L270,140"/>
+    <path d="M215,130 L270,160"/>
+  </g>
+  
+  <!-- Task to Tool Lines -->
+  <g stroke="#f093fb" stroke-width="2" fill="none" opacity="0.8">
+    <!-- From tasks to their specific tools -->
+    <path d="M290,60 L322,60"/>
+    <path d="M290,80 L322,80"/>
+    <path d="M290,100 L322,100"/>
+    <path d="M290,120 L322,120"/>
+    <path d="M290,140 L322,140"/>
+    <path d="M290,160 L322,160"/>
+  </g>
+  
+  <!-- Task Nodes with Tools -->
+  <g>
+    <!-- Task Group 1 -->
+    <g transform="translate(270,60)">
+      <rect x="0" y="-8" width="20" height="16" fill="url(#taskGradient)" rx="3" opacity="0.9"/>
+      <circle cx="10" cy="0" r="2" fill="#ffffff" opacity="0.8"/>
+      <!-- Tool indicator -->
+      <rect x="22" y="-4" width="8" height="8" fill="url(#toolGradient)" rx="2" opacity="0.8"/>
+      <path d="M24,0 L28,0 M26,-2 L26,2" stroke="#ffffff" stroke-width="1"/>
+    </g>
+    
+    <g transform="translate(270,80)">
+      <rect x="0" y="-8" width="20" height="16" fill="url(#taskGradient)" rx="3" opacity="0.9"/>
+      <circle cx="10" cy="0" r="2" fill="#ffffff" opacity="0.8"/>
+      <!-- Tool indicator -->
+      <rect x="22" y="-4" width="8" height="8" fill="url(#toolGradient)" rx="2" opacity="0.8"/>
+      <circle cx="26" cy="0" r="2" fill="#ffffff"/>
+    </g>
+    
+    <!-- Task Group 2 -->
+    <g transform="translate(270,100)">
+      <rect x="0" y="-8" width="20" height="16" fill="url(#taskGradient)" rx="3" opacity="0.9"/>
+      <circle cx="10" cy="0" r="2" fill="#ffffff" opacity="0.8"/>
+      <!-- Tool indicator -->
+      <rect x="22" y="-4" width="8" height="8" fill="url(#toolGradient)" rx="2" opacity="0.8"/>
+      <path d="M24,-1 L28,1 M24,1 L28,-1" stroke="#ffffff" stroke-width="1"/>
+    </g>
+    
+    <g transform="translate(270,120)">
+      <rect x="0" y="-8" width="20" height="16" fill="url(#taskGradient)" rx="3" opacity="0.9"/>
+      <circle cx="10" cy="0" r="2" fill="#ffffff" opacity="0.8"/>
+      <!-- Tool indicator -->
+      <rect x="22" y="-4" width="8" height="8" fill="url(#toolGradient)" rx="2" opacity="0.8"/>
+      <rect x="24" y="-2" width="4" height="4" fill="#ffffff" rx="1"/>
+    </g>
+    
+    <!-- Task Group 3 -->
+    <g transform="translate(270,140)">
+      <rect x="0" y="-8" width="20" height="16" fill="url(#taskGradient)" rx="3" opacity="0.9"/>
+      <circle cx="10" cy="0" r="2" fill="#ffffff" opacity="0.8"/>
+      <!-- Tool indicator -->
+      <rect x="22" y="-4" width="8" height="8" fill="url(#toolGradient)" rx="2" opacity="0.8"/>
+      <path d="M24,-1 L26,-1 L26,1 L28,1" stroke="#ffffff" stroke-width="1" fill="none"/>
+    </g>
+    
+    <g transform="translate(270,160)">
+      <rect x="0" y="-8" width="20" height="16" fill="url(#taskGradient)" rx="3" opacity="0.9"/>
+      <circle cx="10" cy="0" r="2" fill="#ffffff" opacity="0.8"/>
+      <!-- Tool indicator -->
+      <rect x="22" y="-4" width="8" height="8" fill="url(#toolGradient)" rx="2" opacity="0.8"/>
+      <circle cx="24" cy="0" r="1" fill="#ffffff"/>
+      <circle cx="28" cy="0" r="1" fill="#ffffff"/>
+    </g>
+  </g>
+  
+  <!-- Flow Labels -->
+  <text x="120" y="95" text-anchor="middle" fill="#9ca3af" font-family="Arial, sans-serif" font-size="8">BRANCH</text>
+  <text x="232" y="55" text-anchor="middle" fill="#9ca3af" font-family="Arial, sans-serif" font-size="8">TASKS</text>
+  <text x="310" y="55" text-anchor="middle" fill="#9ca3af" font-family="Arial, sans-serif" font-size="8">TOOLS</text>
+  
+  <!-- Title -->
+  <text x="200" y="220" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="28" font-weight="bold" filter="url(#dropshadow)">
+    TASK BREAKER
+  </text>
+  
+  <!-- Subtitle -->
+  <text x="200" y="245" text-anchor="middle" fill="#9ca3af" font-family="Arial, sans-serif" font-size="14" font-weight="300">
+    Context Branching • Private Segmentation • Tool Assignment
+  </text>
+  
+  <!-- Legend -->
+  <g transform="translate(50,260)">
+    <rect x="0" y="0" width="8" height="8" fill="url(#globalGradient)" rx="2"/>
+    <text x="12" y="7" fill="#9ca3af" font-family="Arial, sans-serif" font-size="9">Global Context</text>
+    
+    <rect x="80" y="0" width="8" height="8" fill="url(#privateGradient)" rx="2"/>
+    <text x="92" y="7" fill="#9ca3af" font-family="Arial, sans-serif" font-size="9">Private Context</text>
+    
+    <rect x="170" y="0" width="8" height="8" fill="url(#taskGradient)" rx="2"/>
+    <text x="182" y="7" fill="#9ca3af" font-family="Arial, sans-serif" font-size="9">Tasks</text>
+    
+    <rect x="220" y="0" width="8" height="8" fill="url(#toolGradient)" rx="2"/>
+    <text x="232" y="7" fill="#9ca3af" font-family="Arial, sans-serif" font-size="9">Specific Tools</text>
+  </g>
+  
+  <!-- Animated flow -->
+  <g opacity="0.6">
+    <!-- Flow from global to branch point -->
+    <circle cx="100" cy="100" r="1.5" fill="#667eea">
+      <animate attributeName="cx" values="100;120;140" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.6;1;0" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Flow from branch to private context 1 -->
+    <circle cx="140" cy="100" r="1.5" fill="#ff6b6b">
+      <animate attributeName="cx" values="140;155;170;190" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+      <animate attributeName="cy" values="100;85;75;70" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+      <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+    </circle>
+    
+    <!-- Flow from branch to private context 2 -->
+    <circle cx="140" cy="100" r="1.5" fill="#ff6b6b">
+      <animate attributeName="cx" values="140;155;170;190" dur="2s" repeatCount="indefinite" begin="1s"/>
+      <animate attributeName="cy" values="100;100;100;100" dur="2s" repeatCount="indefinite" begin="1s"/>
+      <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite" begin="1s"/>
+    </circle>
+    
+    <!-- Flow from branch to private context 3 -->
+    <circle cx="140" cy="100" r="1.5" fill="#ff6b6b">
+      <animate attributeName="cx" values="140;155;170;190" dur="2s" repeatCount="indefinite" begin="1.5s"/>
+      <animate attributeName="cy" values="100;115;125;130" dur="2s" repeatCount="indefinite" begin="1.5s"/>
+      <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite" begin="1.5s"/>
+    </circle>
+    
+    <!-- Flow from private context 1 to tasks -->
+    <circle cx="215" cy="70" r="1.5" fill="#4ecdc4">
+      <animate attributeName="cx" values="215;242;270" dur="1.5s" repeatCount="indefinite" begin="2s"/>
+      <animate attributeName="cy" values="70;65;60" dur="1.5s" repeatCount="indefinite" begin="2s"/>
+      <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" begin="2s"/>
+    </circle>
+    
+    <circle cx="215" cy="70" r="1.5" fill="#4ecdc4">
+      <animate attributeName="cx" values="215;242;270" dur="1.5s" repeatCount="indefinite" begin="2.3s"/>
+      <animate attributeName="cy" values="70;75;80" dur="1.5s" repeatCount="indefinite" begin="2.3s"/>
+      <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" begin="2.3s"/>
+    </circle>
+    
+    <!-- Flow from private context 2 to tasks -->
+    <circle cx="215" cy="100" r="1.5" fill="#4ecdc4">
+      <animate attributeName="cx" values="215;242;270" dur="1.5s" repeatCount="indefinite" begin="2.5s"/>
+      <animate attributeName="cy" values="100;100;100" dur="1.5s" repeatCount="indefinite" begin="2.5s"/>
+      <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" begin="2.5s"/>
+    </circle>
+    
+    <circle cx="215" cy="100" r="1.5" fill="#4ecdc4">
+      <animate attributeName="cx" values="215;242;270" dur="1.5s" repeatCount="indefinite" begin="2.8s"/>
+      <animate attributeName="cy" values="100;110;120" dur="1.5s" repeatCount="indefinite" begin="2.8s"/>
+      <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" begin="2.8s"/>
+    </circle>
+    
+    <!-- Flow from private context 3 to tasks -->
+    <circle cx="215" cy="130" r="1.5" fill="#4ecdc4">
+      <animate attributeName="cx" values="215;242;270" dur="1.5s" repeatCount="indefinite" begin="3s"/>
+      <animate attributeName="cy" values="130;135;140" dur="1.5s" repeatCount="indefinite" begin="3s"/>
+      <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" begin="3s"/>
+    </circle>
+    
+    <circle cx="215" cy="130" r="1.5" fill="#4ecdc4">
+      <animate attributeName="cx" values="215;242;270" dur="1.5s" repeatCount="indefinite" begin="3.3s"/>
+      <animate attributeName="cy" values="130;145;160" dur="1.5s" repeatCount="indefinite" begin="3.3s"/>
+      <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" begin="3.3s"/>
+    </circle>
+    
+    <!-- Flow from tasks to tools -->
+    <circle cx="290" cy="60" r="1.5" fill="#f093fb">
+      <animate attributeName="cx" values="290;306;322" dur="1s" repeatCount="indefinite" begin="3.5s"/>
+      <animate attributeName="cy" values="60;60;60" dur="1s" repeatCount="indefinite" begin="3.5s"/>
+      <animate attributeName="opacity" values="0;1;0" dur="1s" repeatCount="indefinite" begin="3.5s"/>
+    </circle>
+    
+    <circle cx="290" cy="80" r="1.5" fill="#f093fb">
+      <animate attributeName="cx" values="290;306;322" dur="1s" repeatCount="indefinite" begin="3.8s"/>
+      <animate attributeName="cy" values="80;80;80" dur="1s" repeatCount="indefinite" begin="3.8s"/>
+      <animate attributeName="opacity" values="0;1;0" dur="1s" repeatCount="indefinite" begin="3.8s"/>
+    </circle>
+    
+    <circle cx="290" cy="100" r="1.5" fill="#f093fb">
+      <animate attributeName="cx" values="290;306;322" dur="1s" repeatCount="indefinite" begin="4s"/>
+      <animate attributeName="cy" values="100;100;100" dur="1s" repeatCount="indefinite" begin="4s"/>
+      <animate attributeName="opacity" values="0;1;0" dur="1s" repeatCount="indefinite" begin="4s"/>
+    </circle>
+    
+    <circle cx="290" cy="120" r="1.5" fill="#f093fb">
+      <animate attributeName="cx" values="290;306;322" dur="1s" repeatCount="indefinite" begin="4.2s"/>
+      <animate attributeName="cy" values="120;120;120" dur="1s" repeatCount="indefinite" begin="4.2s"/>
+      <animate attributeName="opacity" values="0;1;0" dur="1s" repeatCount="indefinite" begin="4.2s"/>
+    </circle>
+    
+    <circle cx="290" cy="140" r="1.5" fill="#f093fb">
+      <animate attributeName="cx" values="290;306;322" dur="1s" repeatCount="indefinite" begin="4.4s"/>
+      <animate attributeName="cy" values="140;140;140" dur="1s" repeatCount="indefinite" begin="4.4s"/>
+      <animate attributeName="opacity" values="0;1;0" dur="1s" repeatCount="indefinite" begin="4.4s"/>
+    </circle>
+    
+    <circle cx="290" cy="160" r="1.5" fill="#f093fb">
+      <animate attributeName="cx" values="290;306;322" dur="1s" repeatCount="indefinite" begin="4.6s"/>
+      <animate attributeName="cy" values="160;160;160" dur="1s" repeatCount="indefinite" begin="4.6s"/>
+      <animate attributeName="opacity" values="0;1;0" dur="1s" repeatCount="indefinite" begin="4.6s"/>
+    </circle>
+  </g>
+</svg>
