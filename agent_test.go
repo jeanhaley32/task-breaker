@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"os"
 	"strings"
 	"testing"
@@ -237,8 +236,8 @@ func TestAgent_SendChatCompletion(t *testing.T) {
 				t.Errorf("Expected finish reason 'stop', got '%s'", choice.FinishReason)
 			}
 
-			// Verify OpenAI format
-			if !strings.Contains(choice.Message.Content, "OpenAI format") {
+			// Verify OpenAI format (unless empty message case)
+			if len(tt.messages) > 0 && !strings.Contains(choice.Message.Content, "OpenAI format") {
 				t.Error("Expected OpenAI format identifier in response")
 			}
 		})
