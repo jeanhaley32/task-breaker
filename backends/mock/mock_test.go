@@ -265,23 +265,23 @@ func TestMockBackend_ChatCompletion_ResponseContent(t *testing.T) {
 
 	// Test response content varies with input
 	tests := []struct {
-		name          string
-		userMessage   string
+		name           string
+		userMessage    string
 		expectContains string
 	}{
 		{
-			name:          "hello message",
-			userMessage:   "Hello",
+			name:           "hello message",
+			userMessage:    "Hello",
 			expectContains: "Hello",
 		},
 		{
-			name:          "question message",
-			userMessage:   "What is AI?",
+			name:           "question message",
+			userMessage:    "What is AI?",
 			expectContains: "What is AI?",
 		},
 		{
-			name:          "complex message",
-			userMessage:   "Can you help me with Go programming?",
+			name:           "complex message",
+			userMessage:    "Can you help me with Go programming?",
 			expectContains: "Can you help me with Go programming?",
 		},
 	}

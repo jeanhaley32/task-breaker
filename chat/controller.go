@@ -33,10 +33,10 @@ type ChatRequest struct {
 
 // ChatResponse represents the response from the chat controller
 type ChatResponse struct {
-	ConversationID ConversationID           `json:"conversation_id"`
-	Message        ai.Message               `json:"message"`
+	ConversationID ConversationID             `json:"conversation_id"`
+	Message        ai.Message                 `json:"message"`
 	Response       *ai.ChatCompletionResponse `json:"response"`
-	Error          string                   `json:"error,omitempty"`
+	Error          string                     `json:"error,omitempty"`
 }
 
 // Controller manages chat conversations and AI backend interactions
@@ -154,18 +154,13 @@ func (c *Controller) SendMessage(ctx context.Context, request ChatRequest) (*Cha
 		conversation = c.CreateConversation(request.SystemPrompt)
 	}
 
-	// Add user message to conversation
+	// Add user message to conversation and prepare AI request
 	userMessage := ai.Message{
 		Role:    "user",
 		Content: request.Message,
 	}
 
-	c.mutex.Lock()
-	conversation.Messages = append(conversation.Messages, userMessage)
-	conversation.UpdatedAt = time.Now()
-	c.mutex.Unlock()
-
-	// Prepare AI request
+	// Prepare model parameters
 	model := request.Model
 	if model == "" {
 		model = c.defaultModel
@@ -181,9 +176,19 @@ func (c *Controller) SendMessage(ctx context.Context, request ChatRequest) (*Cha
 		temperature = &c.temperature
 	}
 
+	// Update conversation and create AI request atomically
+	c.mutex.Lock()
+	conversation.Messages = append(conversation.Messages, userMessage)
+	conversation.UpdatedAt = time.Now()
+
+	// Create a copy of messages for the AI request to avoid holding the lock during API call
+	messagesCopy := make([]ai.Message, len(conversation.Messages))
+	copy(messagesCopy, conversation.Messages)
+	c.mutex.Unlock()
+
 	aiRequest := ai.ChatCompletionRequest{
 		Model:       model,
-		Messages:    conversation.Messages,
+		Messages:    messagesCopy,
 		MaxTokens:   maxTokens,
 		Temperature: temperature,
 	}
@@ -273,15 +278,15 @@ func (c *Controller) GetConversationSummary(id ConversationID) (*ConversationSum
 	}
 
 	return &ConversationSummary{
-		ID:                 conversation.ID,
-		MessageCount:       len(conversation.Messages),
-		UserMessages:       userMessages,
-		AssistantMessages:  assistantMessages,
-		SystemMessages:     systemMessages,
-		EstimatedTokens:    totalTokens,
-		CreatedAt:          conversation.CreatedAt,
-		UpdatedAt:          conversation.UpdatedAt,
-		LastUserMessage:    getLastMessageByRole(conversation.Messages, "user"),
+		ID:                   conversation.ID,
+		MessageCount:         len(conversation.Messages),
+		UserMessages:         userMessages,
+		AssistantMessages:    assistantMessages,
+		SystemMessages:       systemMessages,
+		EstimatedTokens:      totalTokens,
+		CreatedAt:            conversation.CreatedAt,
+		UpdatedAt:            conversation.UpdatedAt,
+		LastUserMessage:      getLastMessageByRole(conversation.Messages, "user"),
 		LastAssistantMessage: getLastMessageByRole(conversation.Messages, "assistant"),
 	}, nil
 }

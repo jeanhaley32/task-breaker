@@ -13,14 +13,14 @@ import (
 )
 
 type Agent struct {
-	name     string
-	context  string
+	name      string
+	context   string
 	aiBackend ai.Backend
 }
 
 func NewAgent(name string, backend ai.Backend) *Agent {
 	return &Agent{
-		name:     name,
+		name:      name,
 		aiBackend: backend,
 	}
 }

@@ -10,9 +10,9 @@ import (
 
 // Config represents the application configuration
 type Config struct {
-	OpenAI    OpenAIConfig    `json:"openai"`
-	Claude    ClaudeConfig    `json:"claude"`
-	Default   DefaultConfig   `json:"default"`
+	OpenAI         OpenAIConfig     `json:"openai"`
+	Claude         ClaudeConfig     `json:"claude"`
+	Default        DefaultConfig    `json:"default"`
 	ChatController ControllerConfig `json:"chat_controller"`
 }
 

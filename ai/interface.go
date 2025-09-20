@@ -24,14 +24,15 @@ type Message struct {
 // Model and Messages are REQUIRED. All other fields are OPTIONAL with sensible defaults.
 //
 // Example usage:
-//   req := ChatCompletionRequest{
-//     Model: "gpt-4",                    // REQUIRED
-//     Messages: []Message{               // REQUIRED - must have at least 1
-//       {Role: "user", Content: "Hello"},
-//     },
-//     MaxTokens: &[]int{150}[0],        // OPTIONAL - nil means no limit
-//     Temperature: &[]float64{0.7}[0],  // OPTIONAL - nil uses provider default
-//   }
+//
+//	req := ChatCompletionRequest{
+//	  Model: "gpt-4",                    // REQUIRED
+//	  Messages: []Message{               // REQUIRED - must have at least 1
+//	    {Role: "user", Content: "Hello"},
+//	  },
+//	  MaxTokens: &[]int{150}[0],        // OPTIONAL - nil means no limit
+//	  Temperature: &[]float64{0.7}[0],  // OPTIONAL - nil uses provider default
+//	}
 type ChatCompletionRequest struct {
 	// Model specifies which AI model to use. REQUIRED.
 	// Examples: "gpt-4", "gpt-3.5-turbo", "claude-3-sonnet", "mock-model-v1"
@@ -99,18 +100,19 @@ type Choice struct {
 // All fields are populated by the backend implementation.
 //
 // Example response structure:
-//   {
-//     "id": "chatcmpl-abc123",
-//     "object": "chat.completion",
-//     "created": 1677858242,
-//     "model": "gpt-3.5-turbo",
-//     "choices": [{
-//       "index": 0,
-//       "message": {"role": "assistant", "content": "Hello!"},
-//       "finish_reason": "stop"
-//     }],
-//     "usage": {"prompt_tokens": 13, "completion_tokens": 7, "total_tokens": 20}
-//   }
+//
+//	{
+//	  "id": "chatcmpl-abc123",
+//	  "object": "chat.completion",
+//	  "created": 1677858242,
+//	  "model": "gpt-3.5-turbo",
+//	  "choices": [{
+//	    "index": 0,
+//	    "message": {"role": "assistant", "content": "Hello!"},
+//	    "finish_reason": "stop"
+//	  }],
+//	  "usage": {"prompt_tokens": 13, "completion_tokens": 7, "total_tokens": 20}
+//	}
 type ChatCompletionResponse struct {
 	// ID is a unique identifier for this completion
 	ID string `json:"id"`
@@ -166,17 +168,18 @@ type Response struct {
 //   - Errors should be wrapped with descriptive messages
 //
 // Example implementation pattern:
-//   type MyBackend struct {
-//     apiKey string
-//     baseURL string
-//   }
 //
-//   func (b *MyBackend) ChatCompletion(ctx context.Context, req ChatCompletionRequest) (*ChatCompletionResponse, error) {
-//     // Validate required fields
-//     if req.Model == "" { return nil, errors.New("model is required") }
-//     if len(req.Messages) == 0 { return nil, errors.New("messages is required") }
-//     // ... implement API call
-//   }
+//	type MyBackend struct {
+//	  apiKey string
+//	  baseURL string
+//	}
+//
+//	func (b *MyBackend) ChatCompletion(ctx context.Context, req ChatCompletionRequest) (*ChatCompletionResponse, error) {
+//	  // Validate required fields
+//	  if req.Model == "" { return nil, errors.New("model is required") }
+//	  if len(req.Messages) == 0 { return nil, errors.New("messages is required") }
+//	  // ... implement API call
+//	}
 type Backend interface {
 	// Name returns a human-readable identifier for this backend.
 	// Used for logging and debugging. Should be unique within your application.
