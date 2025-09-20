@@ -1,0 +1,13 @@
+This is sample context data for the AI agent.
+
+The agent's primary objectives:
+1. Process and understand context from files
+2. Provide intelligent responses based on loaded data
+3. Serve as the foundation for more complex agentic workflows
+
+Current capabilities:
+- File reading and context loading
+- Basic output formatting
+- Error handling for file operations
+
+This context will be used to guide the agent's behavior and decision-making processes.
