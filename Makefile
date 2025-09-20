@@ -48,11 +48,15 @@ bench:
 	@echo "Running benchmarks..."
 	go test -bench=. -benchmem -run=^$$ ./...
 
-# Lint code
+# Lint code (optional - requires golangci-lint installation)
 .PHONY: lint
 lint:
 	@echo "Running linter..."
-	golangci-lint run --timeout=5m
+	@if command -v golangci-lint >/dev/null 2>&1; then \
+		golangci-lint run --timeout=5m; \
+	else \
+		echo "golangci-lint not found. Install with: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest"; \
+	fi
 
 # Format code
 .PHONY: fmt
@@ -104,15 +108,23 @@ run: build
 	@echo "Starting $(BINARY_NAME)..."
 	./$(BUILD_DIR)/$(BINARY_NAME)
 
-# Development workflow - format, vet, lint, test
+# Development workflow - format, vet, test (core tools only)
 .PHONY: check
-check: fmt vet lint test
+check: fmt vet test
 
-# Security scan
+# Development workflow with optional linting - format, vet, lint, test
+.PHONY: check-all
+check-all: fmt vet lint test
+
+# Security scan (optional - requires gosec installation)
 .PHONY: security
 security:
 	@echo "Running security scan..."
-	gosec ./...
+	@if command -v gosec >/dev/null 2>&1; then \
+		gosec ./...; \
+	else \
+		echo "gosec not found. Install with: go install github.com/securecodewarrior/gosec/v2/cmd/gosec@latest"; \
+	fi
 
 # Build for multiple platforms
 .PHONY: build-all
@@ -144,8 +156,9 @@ help:
 	@echo "  clean        - Clean build artifacts"
 	@echo "  install      - Install binary"
 	@echo "  run          - Build and run CLI"
-	@echo "  check        - Run format, vet, lint, and test"
-	@echo "  security     - Run security scan"
+	@echo "  check        - Run format, vet, and test (core tools only)"
+	@echo "  check-all    - Run format, vet, lint, and test (requires linter)"
+	@echo "  security     - Run security scan (optional tool)"
 	@echo "  build-all    - Build for multiple platforms"
 	@echo "  help         - Show this help message"
 
