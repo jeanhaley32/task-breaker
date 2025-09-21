@@ -6,12 +6,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/jeanhaley/task-breaker/ai"
-	"github.com/jeanhaley/task-breaker/backends/mock"
+	"github.com/jeanhaley32/go-openai-client"
 )
 
 func TestNewAgent(t *testing.T) {
-	backend := mock.NewMockBackend()
+	backend := openai.NewMockBackend()
 	agent := NewAgent("TestAgent", backend)
 
 	if agent == nil {
@@ -36,7 +35,7 @@ func TestNewAgent(t *testing.T) {
 }
 
 func TestAgent_LoadContext(t *testing.T) {
-	backend := mock.NewMockBackend()
+	backend := openai.NewMockBackend()
 	agent := NewAgent("TestAgent", backend)
 
 	// Create a temporary test file
@@ -69,7 +68,7 @@ func TestAgent_LoadContext(t *testing.T) {
 }
 
 func TestAgent_SendMessage(t *testing.T) {
-	backend := mock.NewMockBackend()
+	backend := openai.NewMockBackend()
 	agent := NewAgent("TestAgent", backend)
 
 	tests := []struct {
@@ -150,24 +149,24 @@ func TestAgent_SendMessage(t *testing.T) {
 }
 
 func TestAgent_SendChatCompletion(t *testing.T) {
-	backend := mock.NewMockBackend()
+	backend := openai.NewMockBackend()
 	agent := NewAgent("TestAgent", backend)
 
 	tests := []struct {
 		name     string
-		messages []ai.Message
+		messages []openai.Message
 		wantErr  bool
 	}{
 		{
 			name: "single user message",
-			messages: []ai.Message{
+			messages: []openai.Message{
 				{Role: "user", Content: "Hello"},
 			},
 			wantErr: false,
 		},
 		{
 			name: "conversation flow",
-			messages: []ai.Message{
+			messages: []openai.Message{
 				{Role: "user", Content: "Hello"},
 				{Role: "assistant", Content: "Hi there!"},
 				{Role: "user", Content: "How are you?"},
@@ -176,12 +175,12 @@ func TestAgent_SendChatCompletion(t *testing.T) {
 		},
 		{
 			name:     "empty messages",
-			messages: []ai.Message{},
+			messages: []openai.Message{},
 			wantErr:  false, // Mock backend handles this
 		},
 		{
 			name: "system message included",
-			messages: []ai.Message{
+			messages: []openai.Message{
 				{Role: "system", Content: "Be helpful"},
 				{Role: "user", Content: "Hello"},
 			},
@@ -245,7 +244,7 @@ func TestAgent_SendChatCompletion(t *testing.T) {
 }
 
 func TestAgent_SendChatCompletion_WithContext(t *testing.T) {
-	backend := mock.NewMockBackend()
+	backend := openai.NewMockBackend()
 	agent := NewAgent("TestAgent", backend)
 
 	// Load context
@@ -258,7 +257,7 @@ func TestAgent_SendChatCompletion_WithContext(t *testing.T) {
 		t.Fatalf("Failed to load context: %v", err)
 	}
 
-	messages := []ai.Message{
+	messages := []openai.Message{
 		{Role: "user", Content: "Help me with Go"},
 	}
 
@@ -279,7 +278,7 @@ func TestAgent_SendChatCompletion_WithContext(t *testing.T) {
 }
 
 func TestAgent_PrintContext(t *testing.T) {
-	backend := mock.NewMockBackend()
+	backend := openai.NewMockBackend()
 	agent := NewAgent("TestAgent", backend)
 
 	// Load some context
@@ -298,7 +297,7 @@ func TestAgent_PrintContext(t *testing.T) {
 }
 
 func TestAgent_ContextIsolation(t *testing.T) {
-	backend := mock.NewMockBackend()
+	backend := openai.NewMockBackend()
 
 	// Create two agents
 	agent1 := NewAgent("Agent1", backend)
@@ -338,7 +337,7 @@ func TestAgent_ContextIsolation(t *testing.T) {
 }
 
 func TestAgent_MessageTimeout(t *testing.T) {
-	backend := mock.NewMockBackend()
+	backend := openai.NewMockBackend()
 	agent := NewAgent("TestAgent", backend)
 
 	// The mock backend has a 100ms delay, and our agent uses a 30-second timeout
@@ -361,12 +360,12 @@ func TestAgent_MessageTimeout(t *testing.T) {
 }
 
 func TestAgent_ConcurrentMessages(t *testing.T) {
-	backend := mock.NewMockBackend()
+	backend := openai.NewMockBackend()
 	agent := NewAgent("TestAgent", backend)
 
 	// Test that the agent can handle concurrent requests
 	const numRequests = 5
-	responses := make(chan *ai.Response, numRequests)
+	responses := make(chan *openai.Response, numRequests)
 	errors := make(chan error, numRequests)
 
 	for i := 0; i < numRequests; i++ {
@@ -424,7 +423,7 @@ func createTempFile(t *testing.T, content string) string {
 
 // Benchmark tests
 func BenchmarkAgent_SendMessage(b *testing.B) {
-	backend := mock.NewMockBackend()
+	backend := openai.NewMockBackend()
 	agent := NewAgent("BenchAgent", backend)
 
 	b.ResetTimer()
@@ -437,10 +436,10 @@ func BenchmarkAgent_SendMessage(b *testing.B) {
 }
 
 func BenchmarkAgent_SendChatCompletion(b *testing.B) {
-	backend := mock.NewMockBackend()
+	backend := openai.NewMockBackend()
 	agent := NewAgent("BenchAgent", backend)
 
-	messages := []ai.Message{
+	messages := []openai.Message{
 		{Role: "user", Content: "Benchmark test message"},
 	}
 

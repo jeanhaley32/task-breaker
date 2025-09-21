@@ -9,17 +9,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/jeanhaley/task-breaker/ai"
-	"github.com/jeanhaley/task-breaker/backends/mock"
-	"github.com/jeanhaley/task-breaker/backends/openai"
-	"github.com/jeanhaley/task-breaker/chat"
+	"github.com/jeanhaley32/go-openai-client"
+	"github.com/jeanhaley32/go-openai-client/chat"
 	"github.com/jeanhaley/task-breaker/config"
 )
 
 // TestIntegration_FullWorkflow tests the complete system workflow
 func TestIntegration_FullWorkflow(t *testing.T) {
 	// Test with mock backend to ensure no API costs
-	backend := mock.NewMockBackend()
+	backend := openai.NewMockBackend()
 
 	// Create chat controller
 	controller := chat.NewController(backend, &chat.ControllerConfig{
@@ -90,7 +88,7 @@ func TestIntegration_FullWorkflow(t *testing.T) {
 
 	// 6. Test backend switching
 	t.Log("Step 6: Testing backend switching...")
-	newBackend := mock.NewMockBackend()
+	newBackend := openai.NewMockBackend()
 	newBackend.Configure(map[string]interface{}{"name": "SecondMock"})
 
 	controller.SetBackend(newBackend)
@@ -225,17 +223,17 @@ func TestIntegration_MultipleBackends(t *testing.T) {
 
 	// 1. Create multiple backends
 	t.Log("Step 1: Creating multiple backends...")
-	mockBackend1 := mock.NewMockBackend()
+	mockBackend1 := openai.NewMockBackend()
 	mockBackend1.Configure(map[string]interface{}{"name": "Mock1"})
 
-	mockBackend2 := mock.NewMockBackend()
+	mockBackend2 := openai.NewMockBackend()
 	mockBackend2.Configure(map[string]interface{}{"name": "Mock2"})
 
 	// Test OpenAI backend only if API key is available
-	var openaiBackend ai.Backend
+	var openaiBackend openai.Backend
 	if apiKey := os.Getenv("OPENAI_API_KEY"); apiKey != "" {
 		t.Log("OpenAI API key found - including OpenAI backend in test")
-		openaiBackend = openai.NewOpenAIBackend(openai.Config{
+		openaiBackend = openai.NewClient(openai.Config{
 			APIKey: apiKey,
 			Model:  "gpt-3.5-turbo", // Use cheaper model for testing
 		})
@@ -244,7 +242,7 @@ func TestIntegration_MultipleBackends(t *testing.T) {
 	}
 
 	// 2. Test each backend
-	backends := []ai.Backend{mockBackend1, mockBackend2}
+	backends := []openai.Backend{mockBackend1, mockBackend2}
 	if openaiBackend != nil {
 		backends = append(backends, openaiBackend)
 	}
@@ -305,7 +303,7 @@ func TestIntegration_ContextLoading(t *testing.T) {
 
 	// 2. Create agent with context
 	t.Log("Step 2: Creating agent with context...")
-	backend := mock.NewMockBackend()
+	backend := openai.NewMockBackend()
 	agent := NewAgent("ContextTestAgent", backend)
 
 	err := agent.LoadContext(tempFile)
@@ -319,7 +317,7 @@ func TestIntegration_ContextLoading(t *testing.T) {
 
 	// 3. Test that context affects responses
 	t.Log("Step 3: Testing context-aware responses...")
-	response, err := agent.SendChatCompletion([]ai.Message{
+	response, err := agent.SendChatCompletion([]openai.Message{
 		{Role: "user", Content: "Help me with a Go function"},
 	})
 
@@ -356,7 +354,7 @@ func TestIntegration_ErrorHandling(t *testing.T) {
 
 	// 1. Test with invalid OpenAI configuration
 	t.Log("Step 1: Testing invalid OpenAI configuration...")
-	invalidBackend := openai.NewOpenAIBackend(openai.Config{
+	invalidBackend := openai.NewClient(openai.Config{
 		APIKey: "invalid-key",
 		Model:  "gpt-4",
 	})
@@ -376,7 +374,7 @@ func TestIntegration_ErrorHandling(t *testing.T) {
 
 	// 2. Test with cancelled context
 	t.Log("Step 2: Testing cancelled context...")
-	mockBackend := mock.NewMockBackend()
+	mockBackend := openai.NewMockBackend()
 	controller = chat.NewController(mockBackend, nil)
 
 	cancelledCtx, cancel := context.WithCancel(ctx)
@@ -425,7 +423,7 @@ func TestIntegration_ErrorHandling(t *testing.T) {
 	t.Log("Step 5: Testing backend availability...")
 
 	// Create a backend that will be unavailable
-	unavailableBackend := openai.NewOpenAIBackend(openai.Config{
+	unavailableBackend := openai.NewClient(openai.Config{
 		APIKey:  "fake-key",
 		BaseURL: "https://invalid-url-that-does-not-exist.com",
 	})
@@ -447,7 +445,7 @@ func TestIntegration_ErrorHandling(t *testing.T) {
 // TestIntegration_ConcurrentOperations tests system under concurrent load
 func TestIntegration_ConcurrentOperations(t *testing.T) {
 	ctx := context.Background()
-	backend := mock.NewMockBackend()
+	backend := openai.NewMockBackend()
 	controller := chat.NewController(backend, nil)
 
 	const numGoroutines = 20
@@ -597,7 +595,7 @@ func TestIntegration_PerformanceBenchmark(t *testing.T) {
 		t.Skip("Skipping performance test in short mode")
 	}
 
-	backend := mock.NewMockBackend()
+	backend := openai.NewMockBackend()
 	controller := chat.NewController(backend, nil)
 	ctx := context.Background()
 
