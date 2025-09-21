@@ -8,17 +8,16 @@ import (
 	"os"
 	"time"
 
-	"github.com/jeanhaley/task-breaker/ai"
-	"github.com/jeanhaley/task-breaker/backends/mock"
+	"github.com/jeanhaley32/go-openai-client"
 )
 
 type Agent struct {
 	name      string
 	context   string
-	aiBackend ai.Backend
+	aiBackend openai.Backend
 }
 
-func NewAgent(name string, backend ai.Backend) *Agent {
+func NewAgent(name string, backend openai.Backend) *Agent {
 	return &Agent{
 		name:      name,
 		aiBackend: backend,
@@ -47,13 +46,13 @@ func (a *Agent) PrintContext() {
 	fmt.Println("=================")
 }
 
-func (a *Agent) SendMessage(message string) (*ai.Response, error) {
+func (a *Agent) SendMessage(message string) (*openai.Response, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
 	// Create the request
-	req := ai.Request{
-		Messages: []ai.Message{
+	req := openai.Request{
+		Messages: []openai.Message{
 			{
 				Role:    "user",
 				Content: message,
@@ -66,22 +65,22 @@ func (a *Agent) SendMessage(message string) (*ai.Response, error) {
 	return a.aiBackend.SendMessage(ctx, req)
 }
 
-func (a *Agent) SendChatCompletion(messages []ai.Message) (*ai.ChatCompletionResponse, error) {
+func (a *Agent) SendChatCompletion(messages []openai.Message) (*openai.ChatCompletionResponse, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
 	// Add system message with context if available
 	allMessages := messages
 	if a.context != "" {
-		systemMessage := ai.Message{
+		systemMessage := openai.Message{
 			Role:    "system",
 			Content: a.context,
 		}
-		allMessages = append([]ai.Message{systemMessage}, messages...)
+		allMessages = append([]openai.Message{systemMessage}, messages...)
 	}
 
 	// Create OpenAI Chat Completions request
-	req := ai.ChatCompletionRequest{
+	req := openai.ChatCompletionRequest{
 		Model:       "mock-model-v1",
 		Messages:    allMessages,
 		MaxTokens:   &[]int{150}[0],
@@ -93,7 +92,7 @@ func (a *Agent) SendChatCompletion(messages []ai.Message) (*ai.ChatCompletionRes
 
 func main() {
 	// Initialize the mock backend
-	backend := mock.NewMockBackend()
+	backend := openai.NewMockBackend()
 
 	// Check if backend is available
 	ctx := context.Background()
@@ -134,7 +133,7 @@ func main() {
 	fmt.Println("\n=== Test 2: OpenAI Chat Completions ===")
 	fmt.Println("Sending conversation using OpenAI Chat Completions format...")
 
-	messages := []ai.Message{
+	messages := []openai.Message{
 		{Role: "user", Content: "Hello World"},
 		{Role: "assistant", Content: "Hello! How can I help you today?"},
 		{Role: "user", Content: "Can you tell me about task breaking?"},

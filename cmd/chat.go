@@ -9,10 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jeanhaley/task-breaker/ai"
-	"github.com/jeanhaley/task-breaker/backends/mock"
-	"github.com/jeanhaley/task-breaker/backends/openai"
-	"github.com/jeanhaley/task-breaker/chat"
+	"github.com/jeanhaley32/go-openai-client"
+	"github.com/jeanhaley32/go-openai-client/chat"
 	"github.com/jeanhaley/task-breaker/config"
 )
 
@@ -34,14 +32,14 @@ func main() {
 	}
 
 	// Initialize backend based on configuration
-	var backend ai.Backend
+	var backend openai.Backend
 
 	switch cfg.Default.Backend {
 	case "openai":
 		if cfg.OpenAI.APIKey == "" {
 			log.Fatal("OpenAI API key not configured. Set OPENAI_API_KEY environment variable.")
 		}
-		backend = openai.NewOpenAIBackend(openai.Config{
+		backend = openai.NewClient(openai.Config{
 			APIKey:     cfg.OpenAI.APIKey,
 			BaseURL:    cfg.OpenAI.BaseURL,
 			Model:      cfg.OpenAI.Model,
@@ -49,7 +47,7 @@ func main() {
 			MaxRetries: cfg.OpenAI.MaxRetries,
 		})
 	case "mock":
-		backend = mock.NewMockBackend()
+		backend = openai.NewMockBackend()
 	default:
 		log.Fatalf("Unknown backend: %s", cfg.Default.Backend)
 	}
@@ -62,7 +60,7 @@ func main() {
 		log.Printf("Warning: Backend '%s' is not available", backend.Name())
 		if cfg.Default.Backend != "mock" {
 			log.Println("Falling back to mock backend")
-			backend = mock.NewMockBackend()
+			backend = openai.NewMockBackend()
 		}
 	}
 
@@ -222,21 +220,21 @@ func handleCommand(command string, controller *chat.Controller, currentConv **ch
 			return
 		}
 
-		var newBackend ai.Backend
+		var newBackend openai.Backend
 		switch parts[1] {
 		case "openai":
 			if cfg.OpenAI.APIKey == "" {
 				fmt.Printf("❌ OpenAI API key not configured\n\n")
 				return
 			}
-			newBackend = openai.NewOpenAIBackend(openai.Config{
+			newBackend = openai.NewClient(openai.Config{
 				APIKey:  cfg.OpenAI.APIKey,
 				BaseURL: cfg.OpenAI.BaseURL,
 				Model:   cfg.OpenAI.Model,
 				Timeout: cfg.OpenAI.Timeout,
 			})
 		case "mock":
-			newBackend = mock.NewMockBackend()
+			newBackend = openai.NewMockBackend()
 		default:
 			fmt.Printf("❌ Unknown backend: %s\n\n", parts[1])
 			return
